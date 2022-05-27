@@ -5,7 +5,8 @@ using UnityEngine;
 
 public class Sc_CharacterController : MonoBehaviour
 {
-    private const float F_MOVESPEED = 10f;
+    [SerializeField]
+    public float F_MOVESPEED = 5f;
     public int playerID = 0;
     [Header("Components")]
     private Player player;
@@ -29,14 +30,25 @@ public class Sc_CharacterController : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
+
         b_IsGrounded = Physics.Raycast(transform.position + (Vector3.up * 0.1f), -Vector3.up * 0.3f, 0.3f, 1 << 3, QueryTriggerInteraction.UseGlobal);
         //   Debug.DrawRay(transform.position + (Vector3.up * 0.1f), -Vector3.up * 0.3f);
         GetInputs();
         Move();
+
+        if (Input.GetKeyDown(KeyCode.KeypadPlus))
+        {
+            F_MOVESPEED += 0.1f;
+        }
+        if (Input.GetKeyDown(KeyCode.KeypadMinus))
+        {
+            F_MOVESPEED -= 0.1f;
+        }
     }
 
     private void GetInputs()
     {
+        if (!ReInput.isReady) return;
         v2_moveAxis.x = player.GetAxis("Move Horizontal");
         v2_moveAxis.y = player.GetAxis("Move Vertical");
     }
